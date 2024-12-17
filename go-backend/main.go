@@ -20,7 +20,9 @@ func main() {
 		log.Fatal("DATABASE_URL is required")
 	}
 
-    db.InitDB(dbURL)
+	db.InitDB(dbURL)
+
+	db.MigrateDB(db.GetDB(), "./migrations")
 
 	app := fiber.New()
 
@@ -28,5 +30,9 @@ func main() {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "ok"})
 	})
 
-	app.Listen(":3000")
+	appPort := os.Getenv("FIBER_PORT")
+	if appPort == "" {
+		log.Fatal("FIBER_PORT is required")
+	}
+	app.Listen(":" + appPort)
 }
