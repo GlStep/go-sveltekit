@@ -10,6 +10,7 @@ import (
 )
 
 func MigrateDB(db *sqlx.DB, migrationsDir string) {
+	var err error
 	driver, err := postgres.WithInstance(db.DB, &postgres.Config{})
 	if err != nil {
 		log.Fatal("Error creating driver: ", err)

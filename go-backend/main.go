@@ -20,8 +20,14 @@ func main() {
 		log.Fatal("DATABASE_URL is required")
 	}
 
+	log.Println("Initializing database")
 	db.InitDB(dbURL)
 
+	if db.GetDB() == nil {
+		log.Fatal("Error initializing database")
+	}
+
+	log.Println("Migrating database")
 	db.MigrateDB(db.GetDB(), "./migrations")
 
 	app := fiber.New()
@@ -34,5 +40,7 @@ func main() {
 	if appPort == "" {
 		log.Fatal("FIBER_PORT is required")
 	}
-	app.Listen(":" + appPort)
+
+	log.Println("Starting server on port " + appPort)
+	log.Fatal(app.Listen(":" + appPort))
 }
