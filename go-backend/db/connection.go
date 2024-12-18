@@ -10,8 +10,7 @@ import (
 var db *sqlx.DB
 
 func InitDB(connectionURL string) {
-	var err error
-	db, err = sqlx.Open("postgres", connectionURL)
+	db, err := sqlx.Open("postgres", connectionURL)
 	if err != nil {
 		log.Fatal("Error connecting to database: ", err)
 	}
