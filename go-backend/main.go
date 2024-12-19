@@ -6,6 +6,7 @@ import (
 
 	"github.com/GlStep/go-sveltekit/db"
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -31,6 +32,11 @@ func main() {
 	db.MigrateDB(db.GetDB(), "./migrations")
 
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:5173"}, // SvelteKit default port
+		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
+	}))
 
 	app.Get("/", func(c fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "ok"})
